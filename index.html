@@ -8,13 +8,45 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main id="app">
-    <!-- Screens are added here and toggled with the `hidden` class. -->
+    <section class="screen" id="screen-landing">
+      <header class="hero">
+        <h1 class="brand">Fermium</h1>
+        <p class="subtitle">Can you guesstimate?</p>
+      </header>
+
+      <div class="mode-buttons">
+        <button class="btn btn-primary" id="play-competitive">Competitive</button>
+        <button class="btn" id="play-casual">Casual</button>
+      </div>
+
+      <section class="card">
+        <div class="preview-head">
+          <h2>Top scores</h2>
+          <button class="linklike" id="view-leaderboard">Full leaderboard →</button>
+        </div>
+        <ol class="preview-list" id="preview-list"></ol>
+      </section>
+    </section>
+
+    <section class="screen hidden" id="screen-mode">
+      <header class="hero">
+        <h1 class="brand small" id="mode-title">Competitive</h1>
+      </header>
+
+      <section class="card">
+        <p class="mode-desc" id="mode-desc"></p>
+        <div class="actions">
+          <button class="btn" id="mode-back">Back</button>
+          <button class="btn btn-primary" id="mode-start">Start</button>
+        </div>
+      </section>
+    </section>
   </main>
 
   <script src="config.js"></script>

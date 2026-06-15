@@ -1,9 +1,4 @@
-/* ===========================================================
-   Fermium — design tokens & base styles
-   =========================================================== */
-
 :root {
-  /* palette */
   --bg: #0f0f0f;
   --surface: #1a1a1a;
   --border: #2a2a2a;
@@ -13,12 +8,10 @@
   --danger: #e53e3e;
   --success: #38a169;
 
-  /* type */
-  --font-head: "Syne", sans-serif;
+  --font-head: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* layout */
   --maxw: 720px;
 }
 
@@ -41,7 +34,6 @@ body {
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   min-height: 100vh;
 }
 
@@ -51,21 +43,13 @@ body {
   padding: 32px 20px 64px;
 }
 
-/* Headings use Syne. */
 h1,
 h2,
 h3 {
   font-family: var(--font-head);
   font-weight: 700;
-  letter-spacing: -0.01em;
   line-height: 1.1;
-  margin: 0 0 0.4em;
-}
-
-/* Every number on the page is monospace — no exceptions. */
-.mono {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
+  margin: 0;
 }
 
 a {
@@ -77,21 +61,178 @@ a:hover {
   text-decoration: underline;
 }
 
-/* ---- screens ------------------------------------------------ */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
 
 .screen {
-  animation: fade-in 150ms ease;
+  animation: fade 150ms ease;
 }
 
 .hidden {
   display: none !important;
 }
 
-@keyframes fade-in {
+@keyframes fade {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+
+.hero {
+  text-align: center;
+  margin: 48px 0 40px;
+}
+
+.brand {
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.brand.small {
+  font-size: 40px;
+}
+
+.subtitle {
+  margin: 12px 0 0;
+  color: var(--text-secondary);
+  font-size: 18px;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: border-color 120ms ease, color 120ms ease, background 120ms ease;
+}
+
+.btn:hover {
+  border-color: var(--text-secondary);
+}
+
+.btn-primary {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.mode-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.mode-buttons .btn {
+  padding: 28px;
+  font-size: 18px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+
+.preview-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.preview-head h2 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.preview-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.preview-list li {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.preview-list li:first-child {
+  border-top: none;
+}
+
+.preview-list .rank {
+  color: var(--text-secondary);
+}
+
+.preview-list .pts {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.preview-list .preview-empty {
+  display: block;
+  border-top: none;
+  color: var(--text-secondary);
+}
+
+.linklike {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.linklike:hover {
+  text-decoration: underline;
+}
+
+.mode-desc {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+  #app {
+    padding: 24px 16px 48px;
+  }
+
+  .brand {
+    font-size: 48px;
+  }
+
+  .mode-buttons {
+    grid-template-columns: 1fr;
   }
 }
