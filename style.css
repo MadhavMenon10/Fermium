@@ -1,0 +1,97 @@
+/* ===========================================================
+   Fermium — design tokens & base styles
+   =========================================================== */
+
+:root {
+  /* palette */
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --text-secondary: #888888;
+  --accent: #f5a623;
+  --danger: #e53e3e;
+  --success: #38a169;
+
+  /* type */
+  --font-head: "Syne", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* layout */
+  --maxw: 720px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+/* Headings use Syne. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0 0 0.4em;
+}
+
+/* Every number on the page is monospace — no exceptions. */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ---- screens ------------------------------------------------ */
+
+.screen {
+  animation: fade-in 150ms ease;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
