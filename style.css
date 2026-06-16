@@ -468,6 +468,132 @@ a:hover {
   color: var(--text-secondary);
 }
 
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.tab:hover:not(.is-active) {
+  border-color: var(--text-secondary);
+  color: var(--text);
+}
+
+.tab.is-active {
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.board {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.board th,
+.board td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+
+.board th:nth-child(2),
+.board td:nth-child(2) {
+  text-align: left;
+}
+
+.board th {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.board .is-mine {
+  background: rgba(245, 166, 35, 0.12);
+}
+
+.board .is-mine td {
+  color: var(--accent);
+}
+
+.board-empty {
+  text-align: center !important;
+  color: var(--text-secondary);
+  padding: 20px 12px;
+}
+
+.submit-card {
+  margin-bottom: 16px;
+}
+
+.submit-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.submit-row {
+  display: flex;
+  gap: 12px;
+}
+
+#player-name {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 12px 14px;
+  outline: none;
+}
+
+#player-name:focus {
+  border-color: var(--accent);
+}
+
+#player-name:disabled {
+  opacity: 0.6;
+}
+
+.submit-msg {
+  margin: 14px 0 0;
+}
+
+.submit-msg.is-success {
+  color: var(--success);
+}
+
+.submit-msg.is-error {
+  color: var(--danger);
+}
+
+#goto-board {
+  margin-top: 12px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 @media (max-width: 600px) {
   #app {
     padding: 24px 16px 48px;
@@ -495,5 +621,13 @@ a:hover {
 
   .breakdown {
     font-size: 12px;
+  }
+
+  .board {
+    font-size: 12px;
+  }
+
+  .submit-row {
+    flex-direction: column;
   }
 }

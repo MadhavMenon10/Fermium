@@ -130,8 +130,49 @@
         </table>
       </section>
 
+      <section class="card submit-card hidden" id="submit-card">
+        <h2 class="submit-title">Submit to leaderboard</h2>
+        <div class="submit-row">
+          <input type="text" id="player-name" maxlength="20" placeholder="Your name" />
+          <button class="btn btn-primary" id="submit-score">Submit Score</button>
+        </div>
+        <p class="submit-msg hidden" id="submit-msg"></p>
+        <button class="linklike hidden" id="goto-board">View leaderboard →</button>
+      </section>
+
       <div class="actions">
         <button class="btn btn-primary" id="play-again">Play Again</button>
+      </div>
+    </section>
+
+    <section class="screen hidden" id="screen-leaderboard">
+      <header class="hero">
+        <h1 class="brand small">Leaderboard</h1>
+      </header>
+
+      <div class="tabs">
+        <button class="tab" id="tab-week">This Week</button>
+        <button class="tab is-active" id="tab-all">All Time</button>
+      </div>
+
+      <section class="card">
+        <table class="board">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Score</th>
+              <th>Questions</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="board-body"></tbody>
+        </table>
+      </section>
+
+      <div class="actions">
+        <button class="btn" id="board-home">Back to Home</button>
+        <button class="btn btn-primary" id="board-again">Play Again</button>
       </div>
     </section>
   </main>

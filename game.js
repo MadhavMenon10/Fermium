@@ -11,6 +11,12 @@ const MODE_INFO = {
 
 const DIFFICULTY_LABELS = { 1: 'Easy', 2: 'Medium', 3: 'Hard' };
 const ROUND_SECONDS = 600;
+const MAX_TOTAL = 3500;
+
+const BLOCKLIST = [
+  'fuck', 'shit', 'bitch', 'cunt', 'asshole', 'bastard', 'dick', 'piss', 'slut', 'whore',
+  'nigger', 'nigga', 'faggot', 'fag', 'retard', 'spic', 'chink', 'kike', 'wetback', 'tranny'
+];
 
 const session = {
   mode: null,
@@ -26,6 +32,7 @@ const session = {
 };
 
 let selectedMode = null;
+let lastSubmission = null;
 
 function calculateBaseScore(userAnswer, trueAnswer) {
   if (userAnswer <= 0) return 0;
@@ -54,10 +61,19 @@ function formatNumber(value) {
   return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
 }
 
+function formatDate(iso) {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
 function escapeHtml(value) {
   const el = document.createElement('span');
   el.textContent = value;
   return el.innerHTML;
+}
+
+function containsProfanity(name) {
+  const lower = name.toLowerCase();
+  return BLOCKLIST.some((word) => lower.includes(word));
 }
 
 function showScreen(id) {
@@ -71,6 +87,19 @@ function openModeInfo(mode) {
   document.getElementById('mode-title').textContent = info.title;
   document.getElementById('mode-desc').textContent = info.description;
   showScreen('screen-mode');
+}
+
+function goHome() {
+  loadLeaderboardPreview();
+  showScreen('screen-landing');
+}
+
+async function loadLeaderboardPreview() {
+  try {
+    renderLeaderboardPreview(await fetchLeaderboard('all'));
+  } catch {
+    renderLeaderboardPreview([]);
+  }
 }
 
 function renderLeaderboardPreview(scores) {
@@ -110,6 +139,7 @@ function startRound(mode) {
   session.startTime = Date.now();
   session.ended = false;
   session.currentSessionTotal = null;
+  lastSubmission = null;
 
   if (!session.questions.length) return;
 
@@ -253,6 +283,9 @@ function renderEndScreen(timeBonus) {
   document.getElementById('end-bonus-row').classList.toggle('hidden', !competitive);
   document.getElementById('end-bonus').textContent = `+${timeBonus}`;
 
+  document.getElementById('submit-card').classList.toggle('hidden', !competitive);
+  if (competitive) resetSubmitForm();
+
   document.getElementById('breakdown-body').innerHTML = session.scores
     .map((entry) => {
       if (entry.skipped) {
@@ -271,8 +304,99 @@ function renderEndScreen(timeBonus) {
     .join('');
 }
 
-function playAgain() {
-  showScreen('screen-landing');
+function resetSubmitForm() {
+  const name = document.getElementById('player-name');
+  name.value = '';
+  name.disabled = false;
+  document.getElementById('submit-score').disabled = false;
+  document.getElementById('submit-msg').classList.add('hidden');
+  document.getElementById('goto-board').classList.add('hidden');
+}
+
+function showSubmitMessage(message, success) {
+  const el = document.getElementById('submit-msg');
+  el.textContent = message;
+  el.classList.remove('hidden');
+  el.classList.toggle('is-success', success);
+  el.classList.toggle('is-error', !success);
+}
+
+async function submitCurrentScore() {
+  const name = document.getElementById('player-name').value.trim();
+  if (name === '') return showSubmitMessage('Enter a name.', false);
+  if (containsProfanity(name)) return showSubmitMessage('Please choose a different name.', false);
+
+  const total = session.currentSessionTotal;
+  if (total > MAX_TOTAL) return showSubmitMessage('Invalid score', false);
+
+  const score = session.totalBaseScore;
+  const timeBonus = total - score;
+  const questionsAnswered = answeredCount();
+
+  const button = document.getElementById('submit-score');
+  button.disabled = true;
+
+  let ok = false;
+  try {
+    ok = await submitScore(name, score, timeBonus, total, questionsAnswered);
+  } catch {
+    ok = false;
+  }
+
+  if (!ok) {
+    button.disabled = false;
+    return showSubmitMessage('Could not submit. Try again.', false);
+  }
+
+  lastSubmission = { name, total, questionsAnswered };
+  document.getElementById('player-name').disabled = true;
+  showSubmitMessage('Score submitted.', true);
+  document.getElementById('goto-board').classList.remove('hidden');
+}
+
+function openLeaderboard(period) {
+  showScreen('screen-leaderboard');
+  switchTab(period);
+}
+
+function switchTab(period) {
+  document.getElementById('tab-week').classList.toggle('is-active', period === 'week');
+  document.getElementById('tab-all').classList.toggle('is-active', period === 'all');
+  loadBoard(period);
+}
+
+async function loadBoard(period) {
+  const body = document.getElementById('board-body');
+  body.innerHTML = '<tr><td class="board-empty" colspan="5">Loading…</td></tr>';
+  try {
+    renderBoard(await fetchLeaderboard(period));
+  } catch {
+    renderBoard([]);
+  }
+}
+
+function renderBoard(rows) {
+  const body = document.getElementById('board-body');
+  if (!rows.length) {
+    body.innerHTML = '<tr><td class="board-empty" colspan="5">No scores yet.</td></tr>';
+    return;
+  }
+  body.innerHTML = rows
+    .map((row, index) => {
+      const mine =
+        lastSubmission &&
+        row.name === lastSubmission.name &&
+        row.total === lastSubmission.total &&
+        row.questions_answered === lastSubmission.questionsAnswered;
+      return `<tr class="${mine ? 'is-mine' : ''}">
+        <td class="mono">${index + 1}</td>
+        <td>${escapeHtml(row.name)}</td>
+        <td class="mono">${row.total}</td>
+        <td class="mono">${row.questions_answered}</td>
+        <td class="mono">${formatDate(row.created_at)}</td>
+      </tr>`;
+    })
+    .join('');
 }
 
 function showError(message) {
@@ -295,13 +419,21 @@ function init() {
   document.getElementById('skip').addEventListener('click', skipQuestion);
   document.getElementById('next').addEventListener('click', advance);
   document.getElementById('end-round').addEventListener('click', endRound);
-  document.getElementById('play-again').addEventListener('click', playAgain);
-
   document.getElementById('answer').addEventListener('keydown', (event) => {
     if (event.key === 'Enter') submitAnswer();
   });
 
-  renderLeaderboardPreview([]);
+  document.getElementById('play-again').addEventListener('click', goHome);
+  document.getElementById('submit-score').addEventListener('click', submitCurrentScore);
+  document.getElementById('goto-board').addEventListener('click', () => openLeaderboard('all'));
+
+  document.getElementById('view-leaderboard').addEventListener('click', () => openLeaderboard('all'));
+  document.getElementById('tab-week').addEventListener('click', () => switchTab('week'));
+  document.getElementById('tab-all').addEventListener('click', () => switchTab('all'));
+  document.getElementById('board-home').addEventListener('click', goHome);
+  document.getElementById('board-again').addEventListener('click', goHome);
+
+  loadLeaderboardPreview();
   showScreen('screen-landing');
 }
 
