@@ -47,6 +47,93 @@
         </div>
       </section>
     </section>
+
+    <section class="screen hidden" id="screen-game">
+      <div class="topbar">
+        <div class="logo">Fermium</div>
+        <div class="topbar-center">
+          <span class="timer mono hidden" id="timer">10:00</span>
+          <button class="btn-end hidden" id="end-round">End round</button>
+        </div>
+        <div class="status" id="status"></div>
+      </div>
+
+      <div id="question-view">
+        <span class="badge" id="difficulty">Medium</span>
+        <h2 class="prompt" id="prompt"></h2>
+        <input class="answer mono" id="answer" type="number" step="any" inputmode="decimal" placeholder="0" />
+        <p class="unit-label">Your answer in: <span id="unit"></span></p>
+        <p class="error hidden" id="error"></p>
+        <div class="actions">
+          <button class="btn" id="skip">Skip</button>
+          <button class="btn btn-primary" id="submit">Submit</button>
+        </div>
+      </div>
+
+      <div id="result-view" class="hidden">
+        <div class="points">
+          <span class="points-value mono" id="points">0</span>
+          <span class="points-label">points</span>
+        </div>
+        <div class="result-lines">
+          <p>You said: <span class="mono" id="said"></span></p>
+          <p>True answer: ~<span class="mono" id="truth"></span></p>
+          <p>Off by <span class="mono" id="oom"></span> orders of magnitude</p>
+        </div>
+        <p class="decomposition" id="decomposition"></p>
+        <div class="result-foot">
+          <span class="running mono" id="running"></span>
+          <button class="btn btn-primary" id="next">Next Question</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen hidden" id="screen-end">
+      <header class="hero">
+        <h1 class="brand small">Round Over</h1>
+      </header>
+
+      <section class="card end-summary">
+        <div class="stat">
+          <span class="stat-label">Score</span>
+          <span class="stat-value mono" id="end-base">0</span>
+        </div>
+        <div class="stat" id="end-bonus-row">
+          <span class="stat-label">Time bonus</span>
+          <span class="stat-value mono" id="end-bonus">+0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Total</span>
+          <span class="stat-value mono" id="end-total">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Answered</span>
+          <span class="stat-value mono" id="end-answered">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Skipped</span>
+          <span class="stat-value mono" id="end-skipped">0</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <table class="breakdown">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Your answer</th>
+              <th>True answer</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody id="breakdown-body"></tbody>
+        </table>
+      </section>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="play-again">Play Again</button>
+      </div>
+    </section>
   </main>
 
   <script src="config.js"></script>
