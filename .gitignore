@@ -1,6 +1,3 @@
-# Local Supabase configuration — keeps keys out of version control
-config.js
-
 # OS cruft
 .DS_Store
 Thumbs.db
