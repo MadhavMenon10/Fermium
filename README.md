@@ -1,6 +1,9 @@
 # Fermium
 [This README was written by a human]
+
 Fermium is a [Fermi estimation](https://en.wikipedia.org/wiki/Fermi_problem) game. You will be asked absurd questions like _"How many piano tuners work in Chicago?"_ and you answer with a single number. There's no expectation of getting the answer exactly correct, but you need to be within the right order of magnitude.
+
+Play it here: [https://madhavmenon10.github.io/Fermium/](https://madhavmenon10.github.io/Fermium/)
 
 ## Game modes
 
